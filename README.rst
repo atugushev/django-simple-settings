@@ -1,6 +1,6 @@
-=====
+======================
 Django Simple Settings
-=====
+======================
 
 A very simple settings.
 
