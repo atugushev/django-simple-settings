@@ -2,7 +2,7 @@
 Django Simple Settings
 =====
 
-A very simple settings
+A very simple settings.
 
 Quick start
 -----------
@@ -13,7 +13,7 @@ Quick start
 
     $ pip install django-simple-settings
 
-2. Add "simple_settings" to your INSTALLED_APPS setting like this::
+2. Add "simple_settings" to your INSTALLED_APPS setting:
 
 .. code-block:: python
 
@@ -22,19 +22,7 @@ Quick start
         'simple_settings',
     )
 
-3. Run `python manage.py migrate` to create the settings models.
-
-4. Simple use:
-
-Use in code
-
-.. code-block:: python
-
-    from simple_settings import settings
-    if settings.get('is_feature_available') == '1':
-        print "Let's use this feature!"
-
-Use in template
+2. Add context processor if you would like:
 
 .. code-block:: python
 
@@ -43,6 +31,23 @@ Use in template
         'simple_settings.context_processors.simple_settings',
     )
 
-.. code-block:: html
+3. Create models:
+
+.. code-block:: bash
+
+    $ python manage.py migrate
+
+4. Simple use:
+
+.. code-block:: python
+
+    from simple_settings import settings
+    if settings.get('is_feature_available'):
+        print "Let's use this feature!"
+    print settings.get('my_setting')
+    print settings.get['my_setting']
+
+.. code-block:: html+django
 
     {% if simple_settings.is_feature_available %}Let's use this feature!{% endif %}
+    {{ simple_settings.is_feature_available }}
