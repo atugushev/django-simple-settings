@@ -4,7 +4,7 @@ Django Simple Settings
 
 A very simple settings configurable in Django Admin Panel.
 
-Intsallation
+Installation
 ------------
 
 1. Install a package.
