@@ -19,7 +19,7 @@ setup(
     install_requires=['Django>=1.3'],
     include_package_data=True,
     license='MIT License',
-    description='A very simple django settings.',
+    description='A very simple settings configurable in Django Admin Panel.',
     long_description=README,
     url='https://github.com/alikus/django-simple-settings',
     author='Albert Tugushev',
