@@ -2,10 +2,10 @@
 Django Simple Settings
 ======================
 
-A very simple settings.
+A very simple settings configurable in Django Admin Panel.
 
-Quick start
------------
+Intsallation
+------------
 
 1. Install a package.
 
@@ -37,17 +37,23 @@ Quick start
 
     $ python manage.py migrate
 
-4. Simple use:
+
+Usage
+-----
+
+Settings can be set in Django Admin.
+
+Get settings:
 
 .. code-block:: python
 
     from simple_settings import settings
-    if settings.get('is_feature_available'):
-        print "Let's use this feature!"
-    print settings.get('my_setting')
-    print settings.get['my_setting']
+
+    print settings.get('is_feature_available')
+    print settings.get['is_feature_available']
+    
+Get settings in template:
 
 .. code-block:: html+django
 
-    {% if simple_settings.is_feature_available %}Let's use this feature!{% endif %}
     {{ simple_settings.is_feature_available }}
