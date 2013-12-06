@@ -22,7 +22,7 @@ Installation
         'simple_settings',
     )
 
-2. Add context processor if you would like:
+3. Add context processor if you would like:
 
 .. code-block:: python
 
@@ -31,7 +31,7 @@ Installation
         'simple_settings.context_processors.simple_settings',
     )
 
-3. Create models:
+4. Create models:
 
 .. code-block:: bash
 
