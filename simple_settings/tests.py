@@ -1,18 +1,12 @@
 from django.test import TestCase
+from django.test.utils import override_settings
 from django.db import connection
-from django import conf
 
 from .models import Settings
 from .import settings
 
 
 class SimpleSettingsTestCase(TestCase):
-
-    @classmethod
-    def setUpClass(cls):
-        # The test runner sets DEBUG to False. Set to True to enable SQL logging.
-        setattr(conf.settings, 'DEBUG', True)
-
     def test_get(self):
 
         test_key = "test_get_key"
@@ -81,6 +75,7 @@ class SimpleSettingsTestCase(TestCase):
         else:
             self.fail("Should throw ValueError exception")
 
+    @override_settings(DEBUG=True)
     def test_cache(self):
         test_key = "test_cache_key"
         Settings.objects.create(key=test_key, value="test_value")
