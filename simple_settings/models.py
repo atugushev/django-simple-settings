@@ -17,6 +17,27 @@ class SettingsManager(models.Manager):
                     self._cached_settings[s.key] = globals()['__builtins__'][s.value_type](s.value)
         return self._cached_settings
 
+    def set_item(self, key, value):
+        """Sets setting ``key`` to ``value```"""
+        value_type = type(value).__name__
+        if value_type not in ('bool', 'float', 'int', 'str'):
+            raise ValueError('Unsupported value type.')
+
+        obj, created = self.get_or_create(key=key, defaults={'value': value, 'value_type': value_type})
+        if not created:
+            obj.key = key
+            obj.value = value
+            obj.value_type = value_type
+            obj.save()
+        return obj
+
+    def del_item(self, key):
+        """Deletes setting ``key``"""
+        try:
+            self.get(key=key).delete()
+        except self.model.DoesNotExist:
+            raise KeyError(key)
+
     def clear_cache(self):
         """Clear cache of settings"""
         self._cached_settings = {}
