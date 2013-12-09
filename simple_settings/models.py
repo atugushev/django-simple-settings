@@ -1,21 +1,33 @@
+from django.conf import settings as _settings
+from django.core.cache import get_cache
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 
-class SettingsManager(models.Manager):
-    _cached_settings = {}
+SIMPLE_SETTINGS_CACHE_TIMEOUT = getattr(_settings, 'SIMPLE_SETTINGS_CACHE_TIMEOUT', 60 * 60 * 24)
+SIMPLE_SETTINGS_CACHE_ALIAS = getattr(_settings, 'SIMPLE_SETTINGS_CACHE_ALIAS', 'default')
+SIMPLE_SETTINGS_CACHE_KEY = 'simple_settings:all'
+cache = get_cache(SIMPLE_SETTINGS_CACHE_ALIAS)
 
+
+class SettingsManager(models.Manager):
     def to_dict(self):
         """Returns a dict like key => value"""
-        if not self._cached_settings:
+        obj = cache.get(SIMPLE_SETTINGS_CACHE_KEY, default={})
+        if not obj:
             for s in self.all():
                 if s.value_type == 'bool':
-                    self._cached_settings[s.key] = True if s.value.lower() == "true" else False
+                    obj[str(s.key)] = True if s.value.lower() == "true" else False
                 else:
-                    self._cached_settings[s.key] = globals()['__builtins__'][s.value_type](s.value)
-        return self._cached_settings
+                    obj[str(s.key)] = globals()['__builtins__'][s.value_type](s.value)
+            cache.set(SIMPLE_SETTINGS_CACHE_KEY, obj, timeout=SIMPLE_SETTINGS_CACHE_TIMEOUT)
+        return obj
+
+    def get_item(self, key, default=None):
+        """Returns setting ``value`` of ``key`` or ``default`` if ``key`` was not found."""
+        return self.to_dict().get(key, default)
 
     def set_item(self, key, value):
         """Sets setting ``key`` to ``value```"""
@@ -40,7 +52,7 @@ class SettingsManager(models.Manager):
 
     def clear_cache(self):
         """Clear cache of settings"""
-        self._cached_settings = {}
+        cache.delete(SIMPLE_SETTINGS_CACHE_KEY)
 
 
 class Settings(models.Model):

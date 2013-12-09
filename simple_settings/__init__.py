@@ -1,17 +1,22 @@
 from .models import Settings
 
-VERSION = '0.2'
+VERSION = '0.3'
 
 
 class LazySettings(object):
     """Provides lazy settings"""
+    _interface = {
+        'get': 'get_item',
+        'set': 'set_item',
+        'delete': 'del_item',
+        'all': 'to_dict'
+    }
+
     def __getattr__(self, item):
-        if item == 'set':
-            return Settings.objects.set_item
-        elif item == 'delete':
-            return Settings.objects.del_item
+        if item in self._interface:
+            return getattr(Settings.objects, self._interface[item])
         else:
-            return getattr(Settings.objects.to_dict(), item)
+            raise AttributeError
 
     def __getitem__(self, item):
         return Settings.objects.to_dict()[item]

@@ -48,13 +48,14 @@ Get settings:
     from simple_settings import settings
 
     print settings.get('is_feature_available')
+    print settings.get('is_feature_available', default=False)
     print settings['is_feature_available']
 
 Get all settings as dict:
 
 .. code-block:: python
 
-    all_settings = dict(settings)
+    print settings.all()
 
 Get settings in template if you include context processor:
 
@@ -76,3 +77,12 @@ Delete settings:
 .. code-block:: python
 
     settings.delete('is_feature_available')
+
+Settings
+--------
+Default application settings can be overriden in settings.py:
+
+.. code-block:: python
+
+    SIMPLE_SETTINGS_CACHE_TIMEOUT = 60 * 60 * 24 #  default cache timeout is one day
+    SIMPLE_SETTINGS_CACHE_ALIAS = 'default' # default cache backend
