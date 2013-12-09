@@ -92,7 +92,8 @@ class Settings(models.Model):
                 raise ValidationError({'value': [_('Incorrect integer value')]})
 
 
-@receiver(signal=(post_save, post_delete), sender=Settings)
+@receiver(signal=post_save, sender=Settings)
+@receiver(signal=post_delete, sender=Settings)
 def settings_update_handler(**kwargs):
     """Clear settings cache"""
     instance = kwargs.pop('instance')

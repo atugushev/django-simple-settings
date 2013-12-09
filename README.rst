@@ -4,6 +4,12 @@ Django Simple Settings
 
 A very simple settings configurable in Django Admin Panel. Supported types: bool, float, int, str.
 
+.. image:: https://badge.fury.io/py/django-simple-settings.png
+   :target: http://badge.fury.io/py/django-simple-settings
+
+.. image:: https://api.travis-ci.org/alikus/django-simple-settings.png
+   :target: https://travis-ci.org/alikus/django-simple-settings
+
 Installation
 ------------
 
@@ -35,8 +41,7 @@ Installation
 
 .. code-block:: bash
 
-    $ python manage.py migrate
-
+    $ python manage.py migrate || python manage.py syncdb
 
 Usage
 -----
