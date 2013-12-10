@@ -1,27 +1,32 @@
 #!/usr/bin/env python
-import os
 import sys
+import os
 
 from django.conf import settings
 from django.core.management import call_command
 
+BASE_DIR = os.path.dirname(__file__)
+
 
 def runtests():
     if not settings.configured:
-        # Choose database for settings
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.sqlite3',
-                'NAME': ':memory:'
-            }
-        }
         # Configure test environment
         settings.configure(
-            DATABASES = DATABASES,
-            INSTALLED_APPS = (
+            DATABASES={
+                'default': {
+                    'ENGINE': 'django.db.backends.sqlite3',
+                    'NAME': ':memory:'
+                }
+            },
+            INSTALLED_APPS=(
                 'simple_settings',
             ),
-            ROOT_URLCONF = None,
+            TEMPLATE_CONTEXT_PROCESSORS = (
+                'django.core.context_processors.request',
+                'simple_settings.context_processors.simple_settings',
+            ),
+            TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'simple_settings'),),
+            ROOT_URLCONF = 'simple_settings.tests.test_urls',
             LANGUAGES = (
                 ('en', 'English'),
             ),

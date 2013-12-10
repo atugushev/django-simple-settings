@@ -1,8 +1,9 @@
 from django.db import connection
 from django.test import TestCase
 from django.test.utils import override_settings
+from django.test.client import Client
 
-from .import settings
+from simple_settings import settings
 
 
 class SimpleSettingsTestCase(TestCase):
@@ -100,3 +101,22 @@ class SimpleSettingsTestCase(TestCase):
         # Test invalidation on delete
         settings.delete(test_key)
         self.assertEqual(settings.get(test_key), None)
+
+    def test_context_processors(self):
+        test_key = "test_setting_key"
+        test_value = "test_setting_value"
+
+        settings.set(test_key, test_value)
+        c = Client()
+        response = c.get('/test_context_processor/')
+        self.assertContains(response, test_value)
+
+        settings.set(test_key, "test_setting_value_2")
+        c = Client()
+        response = c.get('/test_context_processor/')
+        self.assertContains(response, "test_setting_value_2")
+
+        settings.delete(test_key)
+        c = Client()
+        response = c.get('/test_context_processor/')
+        self.assertNotContains(response, test_value)
