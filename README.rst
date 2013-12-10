@@ -95,4 +95,5 @@ Default application settings can be overriden in settings.py:
 Requirements
 ------------
 
+* Python 2.6, 2.7, 3.3
 * Django 1.3+
