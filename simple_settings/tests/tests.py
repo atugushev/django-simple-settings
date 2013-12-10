@@ -1,9 +1,22 @@
 from django.db import connection
 from django.test import TestCase
-from django.test.utils import override_settings
 from django.test.client import Client
 
 from simple_settings import settings
+
+try:
+    from django.test.utils import override_settings
+except ImportError:  # for Django 1.3 support
+    from django.conf import settings as project_settings
+
+    def override_settings(**kw):
+        def _override_settings(fn):
+            def wrapped(*args, **kwargs):
+                for key, value in kw.iteritems():
+                    setattr(project_settings, key, value)
+                return fn(*args, **kwargs)
+            return wrapped
+        return _override_settings
 
 
 class SimpleSettingsTestCase(TestCase):
@@ -79,7 +92,9 @@ class SimpleSettingsTestCase(TestCase):
 
         settings.set(test_key, test_value)
         self.assertEquals(settings.get(test_key), test_value)
+
         count_queries = len(connection.queries)
+        self.assertNotEqual(count_queries, 0)
 
         for x in range(10):
             self.assertEquals(settings.get(test_key + str(x)), None)

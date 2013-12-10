@@ -1,4 +1,8 @@
-from django.conf.urls import patterns, url
+try:
+    from django.conf.urls import url, patterns
+except ImportError:  # for Django 1.3 support
+    from django.conf.urls.defaults import url, patterns
+
 
 from .test_views import test_context_processor
 

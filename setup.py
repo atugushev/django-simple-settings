@@ -16,7 +16,7 @@ setup(
     name='django-simple-settings',
     version=VERSION,
     packages=['simple_settings'],
-    install_requires=['Django>=1.4'],
+    install_requires=['Django>=1.3'],
     include_package_data=True,
     license='MIT License',
     description='A very simple settings configurable in Django Admin Panel.',
