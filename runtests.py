@@ -32,9 +32,7 @@ def runtests():
             ),
         )
 
-    failures = call_command(
-        'test', 'simple_settings', interactive=False, failfast=False,
-        verbosity=2)
+    failures = call_command('test', 'simple_settings', interactive=False, failfast=False, verbosity=2)
     sys.exit(bool(failures))
 
 

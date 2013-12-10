@@ -91,3 +91,8 @@ Default application settings can be overriden in settings.py:
 
     SIMPLE_SETTINGS_CACHE_TIMEOUT = 60 * 60 * 24 #  default cache timeout is one day
     SIMPLE_SETTINGS_CACHE_ALIAS = 'default' # default cache backend
+
+Requirements
+------------
+
+* Django 1.4+
