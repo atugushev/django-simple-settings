@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import connection
 from django.test import TestCase
 from django.test.client import Client
@@ -135,3 +136,34 @@ class SimpleSettingsTestCase(TestCase):
         c = Client()
         response = c.get('/test_context_processor/')
         self.assertNotContains(response, test_value)
+
+    def test_unknown_attribute(self):
+        try:
+            settings.foo('bar')
+        except AttributeError:
+            pass
+        else:
+            self.fail("Should throw AttributeError exception")
+
+    def test_unsupported_type(self):
+        try:
+            settings.set('test_key', {'1': '1'})
+        except ValueError:
+            pass
+        else:
+            self.fail("Should throw ValueError exception")
+
+    def test_clean_model_settings(self):
+        from simple_settings.models import Settings
+        obj = Settings(key='test_clean_model_settings_key', value='test_value')
+        obj.clean()
+
+        for vtype in ('bool', 'float', 'int'):
+            obj.value = vtype
+            obj.value_type = vtype
+            try:
+                obj.clean()
+            except ValidationError:
+                pass
+            else:
+                self.fail("Should throw ValidationError exception. Trace: vtype=%s" % vtype)

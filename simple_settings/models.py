@@ -74,9 +74,6 @@ class Settings(models.Model):
         verbose_name = _('setting')
         verbose_name_plural = _('settings')
 
-    def __unicode__(self):
-        return "%s: %s" % (self.key, self.value)
-
     def clean(self):
         if self.value_type == 'bool' and self.value not in ("true", "false"):
             raise ValidationError({'value': [_('For boolean type available case-insensitive values: true, false')]})
