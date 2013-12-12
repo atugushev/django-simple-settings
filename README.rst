@@ -10,6 +10,9 @@ A very simple settings configurable in Django Admin Panel. Supported types: bool
 .. image:: https://api.travis-ci.org/alikus/django-simple-settings.png
    :target: https://travis-ci.org/alikus/django-simple-settings
 
+.. image:: https://coveralls.io/repos/alikus/django-simple-settings/badge.png?branch=master
+    :target: https://coveralls.io/r/alikus/django-simple-settings?branch=master
+
 Installation
 ------------
 
